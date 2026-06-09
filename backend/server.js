@@ -1,47 +1,51 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
-
-const { PayOS } = require("@payos/node");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "OPTIONS"]
+}));
+
 app.use(express.json());
 
-// ✅ PayOS init đúng chuẩn SDK v2
-const payOS = new PayOS({
-  clientId: process.env.PAYOS_CLIENT_ID,
-  apiKey: process.env.PAYOS_API_KEY,
-  checksumKey: process.env.PAYOS_CHECKSUM_KEY,
-});
-
-app.post("/create-payment-link", async (req, res) => {
+app.post("/create-vietqr", (req, res) => {
   try {
-    const { amount } = req.body;
+    const { amount, orderId } = req.body;
 
-    // ⚡ body tạo payment link
-    const body = {
-      orderCode: Number(Date.now()),
-      amount: Number(amount),
-      description: "UAR SPORT",
-      returnUrl: "http://localhost:5173/payment-success",
-      cancelUrl: "http://localhost:5173/cart",
-    };
+    if (!amount || !orderId) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing amount or orderId",
+      });
+    }
 
-    // ✅ SDK v2 đúng function
-    const paymentLink = await payOS.paymentRequests.create(body);
+    const bank = "VCB";
+    const account = "0123456789";
+    const accountName = "NGUYEN VAN A";
 
-    res.json(paymentLink);
+    const qrUrl =
+      `https://img.vietqr.io/image/${bank}-${account}-compact.png?amount=${amount}&addInfo=${orderId}&accountName=${encodeURIComponent(accountName)}`;
+
+    return res.json({
+      success: true,
+      orderId,
+      amount,
+      qr: qrUrl,
+    });
+
   } catch (error) {
-    console.error("PayOS Error:", error);
-    res.status(500).json({
-      message: "Create payment link failed",
-      error: error,
+    console.error("VietQR Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Create VietQR failed",
     });
   }
 });
 
-app.listen(3000, () => {
-  console.log("PayOS Server Running...");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("VietQR Server Running on port " + PORT);
 });
