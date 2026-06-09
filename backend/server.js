@@ -47,10 +47,10 @@ app.post("/create-vietqr", (req, res) => {
 });
 
 // 2. FRONTEND: Trỏ đúng vào thư mục 'build' nằm cùng cấp với server.js
-app.use(express.static(path.join(__dirname, "build")));
-
+// 2. CHỈ ĐỊNH THƯ MỤC DIST
+app.use(express.static(path.join(__dirname, "dist")));
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 // 3. SERVER
