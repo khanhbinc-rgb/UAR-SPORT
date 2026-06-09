@@ -5,11 +5,20 @@ import codIcon from "../assets/box.png";
 import { useCart } from "../context/CartContext";
 
 function Cart() {
-    const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart } = useCart();
+  
+  // --- CẤU HÌNH ---
+  const [showQR, setShowQR] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false); // Thêm state này
+  const BANK_BIN = "970407";
+  const BANK_ACCOUNT = "7218088888";
+  const ACCOUNT_NAME = "TRUONG DUY KHANH";
+  // ----------------
+
   const [formData, setFormData] = useState({
     email: "", name: "", phone: "", address: "",
     province: "", district: "", ward: "", note: "",
-    paymentMethod: "payos_qr"
+    paymentMethod: "vietqr"
   });
 
   const [provinces, setProvinces] = useState([]);
@@ -17,13 +26,10 @@ function Cart() {
   const [wards, setWards] = useState([]);
   const [loading, setLoading] = useState(false);
 
-const totalAmount = cart.reduce((total, item) => {
-  const price = Number(
-    item.price.replace(/[^\d]/g, "")
-  );
-
-  return total + price;
-}, 0);
+  const totalAmount = cart.reduce((total, item) => {
+    const price = Number(item.price.replace(/[^\d]/g, ""));
+    return total + price;
+  }, 0);
   const shippingFee = formData.paymentMethod === "cod" ? 30000 : 0;
 
   useEffect(() => {
@@ -59,15 +65,24 @@ const totalAmount = cart.reduce((total, item) => {
 
   const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // --- HÀM XỬ LÝ ĐẶT HÀNG ---
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.address || !formData.province) {
       alert("Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    setLoading(true);
-    // Logic gửi dữ liệu giữ nguyên như cũ...
-    setLoading(false);
+    
+    if (formData.paymentMethod === "vietqr") {
+      setShowQR(true);
+    } else {
+      setLoading(true);
+      // Giả lập gửi dữ liệu...
+      setTimeout(() => {
+        setLoading(false);
+        setShowSuccess(true);
+      }, 1000);
+    }
   };
 
   return (
@@ -83,7 +98,6 @@ const totalAmount = cart.reduce((total, item) => {
           <div>
             <h2 className="text-base font-bold mb-4 flex justify-between items-center">
               Thông tin nhận hàng
-              <span className="text-sm font-normal text-black underline cursor-pointer">Đăng nhập</span>
             </h2>
             <div className="flex flex-col gap-3">
               <input type="email" name="email" placeholder="Email (tùy chọn)" onChange={handleInputChange} className="w-full p-2.5 border border-zinc-300 rounded text-sm focus:outline-black bg-white" />
@@ -114,25 +128,17 @@ const totalAmount = cart.reduce((total, item) => {
             <div className="border border-zinc-300 rounded divide-y divide-zinc-200 bg-white">
               <label className="flex items-center justify-between p-4 cursor-pointer hover:bg-zinc-100">
                 <div className="flex items-center gap-3">
-                  <input type="radio" name="paymentMethod" value="payos_qr" checked={formData.paymentMethod === "payos_qr"} onChange={handleInputChange} className="accent-black w-4 h-4" />
+                  <input type="radio" name="paymentMethod" value="vietqr" checked={formData.paymentMethod === "vietqr"} onChange={handleInputChange} className="accent-black w-4 h-4" />
                   <span className="text-sm">Quét mã QR chuyển khoản (Free Ship)</span>
                 </div>
-                <img
-  src={vietqrLogo}
-  alt="VietQR"
-  className="h-4 object-contain"
-/>
+                <img src={vietqrLogo} alt="VietQR" className="h-4 object-contain" />
               </label>
               <label className="flex items-center justify-between p-4 cursor-pointer hover:bg-zinc-100">
                 <div className="flex items-center gap-3">
                   <input type="radio" name="paymentMethod" value="cod" checked={formData.paymentMethod === "cod"} onChange={handleInputChange} className="accent-black w-4 h-4" />
                   <span className="text-sm">Thanh toán khi giao hàng (COD)</span>
                 </div>
-                <img
-  src={codIcon}
-  alt="COD"
-  className="h-5 object-contain"
-/>
+                <img src={codIcon} alt="COD" className="h-5 object-contain" />
               </label>
             </div>
           </div>
@@ -140,45 +146,20 @@ const totalAmount = cart.reduce((total, item) => {
 
         {/* CỘT PHẢI */}
         <div className="lg:col-span-5 bg-zinc-100 p-6 rounded-lg border border-zinc-200 h-fit flex flex-col gap-5">
-          <h2 className="text-base font-bold border-b border-black pb-2">
-  Đơn hàng ({cart.length} sản phẩm)
-</h2>
+          <h2 className="text-base font-bold border-b border-black pb-2">Đơn hàng ({cart.length} sản phẩm)</h2>
           <div className="border-b border-zinc-300 pb-4 space-y-4">
-  {cart.map((item, index) => (
-    <div key={index} className="flex gap-3 items-start">
-
-      <img
-        src={item.image}
-        alt={item.name}
-        className="w-16 h-16 object-cover border border-zinc-300 rounded bg-white"
-      />
-
-      <div className="flex-1">
-        <h3 className="text-xs font-semibold leading-tight">
-          {item.name}
-        </h3>
-      </div>
-
-      <div className="flex flex-col items-end gap-2">
-  <span className="text-sm font-medium">
-    {item.price}
-  </span>
-
-  <button
-    onClick={() => removeFromCart(index)}
-    className="text-red-500 text-xs hover:underline"
-  >
-    Xóa
-  </button>
-</div>
-
-    </div>
-  ))}
-</div>
-
-          <div className="flex gap-2">
-            <input type="text" placeholder="Mã giảm giá" className="flex-1 p-2 border border-zinc-300 rounded text-sm bg-white" />
-            <button type="button" className="bg-black hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-sm transition">Áp dụng</button>
+            {cart.map((item, index) => (
+              <div key={index} className="flex gap-3 items-start">
+                <img src={item.image} alt={item.name} className="w-16 h-16 object-cover border border-zinc-300 rounded bg-white" />
+                <div className="flex-1">
+                  <h3 className="text-xs font-semibold leading-tight">{item.name}</h3>
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                  <span className="text-sm font-medium">{item.price}</span>
+                  <button onClick={() => removeFromCart(index)} className="text-red-500 text-xs hover:underline">Xóa</button>
+                </div>
+              </div>
+            ))}
           </div>
 
           <div className="flex flex-col gap-2 text-sm border-b border-zinc-300 pb-4">
@@ -199,6 +180,50 @@ const totalAmount = cart.reduce((total, item) => {
           </div>
         </div>
       </div>
+
+{/* MODAL QR */}
+      {showQR && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center relative">
+            {/* NÚT THOÁT X */}
+            <button 
+              onClick={() => setShowQR(false)} 
+              className="absolute top-2 right-2 text-zinc-400 hover:text-black text-2xl font-bold px-3 py-1"
+            >
+              ×
+            </button>
+            
+            <h2 className="font-bold mb-4">Quét mã QR thanh toán</h2>
+            <img 
+              src={`https://img.vietqr.io/image/${BANK_BIN}-${BANK_ACCOUNT}-compact.png?amount=${totalAmount + shippingFee}&addInfo=THANH TOAN DH&accountName=${encodeURIComponent(ACCOUNT_NAME)}`} 
+              alt="QR" 
+              className="w-full mb-4" 
+            />
+            <button 
+              onClick={() => { setShowQR(false); setShowSuccess(true); }} 
+              className="w-full bg-black text-white py-2 rounded text-sm uppercase font-bold"
+            >
+              Đã thanh toán
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL THÀNH CÔNG */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
+            <h2 className="text-xl font-bold mb-2">Đặt hàng thành công!</h2>
+            <p className="text-sm text-zinc-600 mb-6">Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ liên hệ sớm nhất.</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="w-full bg-black text-white py-2 rounded text-sm uppercase font-bold"
+            >
+              Quay Lại
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
