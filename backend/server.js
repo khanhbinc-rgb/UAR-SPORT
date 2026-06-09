@@ -16,7 +16,7 @@ const path = require("path");
 app.use(express.static(path.join(__dirname, "build")));
 
 // 2. Mọi đường dẫn không phải API thì trả về file index.html của React
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
