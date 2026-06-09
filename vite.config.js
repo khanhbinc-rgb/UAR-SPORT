@@ -7,9 +7,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  root: './', // Bảo Vite hãy đứng ở thư mục gốc để tìm index.html
   build: {
-    outDir: 'backend/dist', // Lệnh này giúp build ra folder backend/dist
+    outDir: 'backend/dist', // Vẫn xuất file build vào backend/dist
     emptyOutDir: true,
   },
-  base: './' // Lệnh này giúp trình duyệt tìm đúng file JS/CSS
+  base: './'
 })
