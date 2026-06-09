@@ -9,6 +9,16 @@ app.use(cors({
 }));
 
 app.use(express.json());
+const path = require("path");
+
+// 1. Chỉ định thư mục chứa file build của React (thường tên là build hoặc dist)
+// Giả sử bạn đặt folder build trong cùng thư mục với server.js
+app.use(express.static(path.join(__dirname, "build")));
+
+// 2. Mọi đường dẫn không phải API thì trả về file index.html của React
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.post("/create-vietqr", (req, res) => {
   try {
