@@ -1,5 +1,5 @@
 // 1. IMPORT LOGO Ở ĐẦU FILE (Hãy đảm bảo bạn đã bỏ file ảnh logo.png vào thư mục src/assets)
-import logoWebsite from "../assets/Logo uar sport đen.png";
+import logoWebsite from "../assets/logouarsportden.png";
 
 function Footer() {
   return (
