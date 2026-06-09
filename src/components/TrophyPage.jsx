@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { products } from "../data/products"; // Đọc file data chuẩn 4 sản phẩm của bạn
-import logoBlack from "../assets/logo uar sport đen.png";
+import logoBlack from "../assets/Logo-uar-sport-đen.png";
 import addToCartIcon from "../assets/Icon thêm vào giỏ hàng.png"; 
 // ĐÃ THÊM: Import thẻ Link để chạy định tuyến trang chi tiết
 import { Link } from "react-router-dom";

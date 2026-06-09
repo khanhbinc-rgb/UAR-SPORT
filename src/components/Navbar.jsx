@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import logo from "../assets/logo uar sport.png";
+import logo from "../assets/logo-uar-sport.png";
 import cartIcon from "../assets/cart white.png";
 import { useCart } from "../context/CartContext";
 
