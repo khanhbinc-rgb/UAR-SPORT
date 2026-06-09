@@ -44,8 +44,9 @@ app.post("/create-vietqr", (req, res) => {
   }
 });
 
+// ✅ CHỈ ĐƯỢC KHAI BÁO 1 LẦN
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("VietQR Server Running on port " + PORT);
+  console.log(`VietQR Server running on port ${PORT}`);
 });
