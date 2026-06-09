@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path"); // Đưa lên đầu cho gọn
+const path = require("path");
 
 const app = express();
 
@@ -11,7 +11,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// 1. CHUYỂN API LÊN ĐẦU (Để server xử lý request API trước)
+// 1. API: Xử lý trước
 app.post("/create-vietqr", (req, res) => {
   try {
     const { amount, orderId } = req.body;
@@ -46,15 +46,14 @@ app.post("/create-vietqr", (req, res) => {
   }
 });
 
-// 2. CHỈ ĐỊNH THƯ MỤC BUILD (Đã thêm ".." để thoát ra folder backend)
-app.use(express.static(path.join(__dirname, "..", "build")));
+// 2. FRONTEND: Trỏ đúng vào thư mục 'build' nằm cùng cấp với server.js
+app.use(express.static(path.join(__dirname, "build")));
 
-// 3. TRẢ VỀ INDEX.HTML (Để ở cuối cùng)
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-// ✅ CHỈ ĐƯỢC KHAI BÁO 1 LẦN
+// 3. SERVER
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
