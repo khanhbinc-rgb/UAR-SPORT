@@ -67,23 +67,49 @@ function Cart() {
 
   // --- HÀM XỬ LÝ ĐẶT HÀNG ---
   const handleOrderSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.phone || !formData.address || !formData.province) {
-      alert("Vui lòng điền đầy đủ thông tin!");
-      return;
-    }
-    
+  e.preventDefault();
+
+  if (!formData.name || !formData.phone || !formData.address || !formData.province) {
+    alert("Vui lòng điền đầy đủ thông tin!");
+    return;
+  }
+
+  try {
+    const orderData = {
+      orderId: "UAR-" + Date.now(),
+      name: formData.name,
+      phone: formData.phone,
+      address: `${formData.address}, ${formData.ward}, ${formData.district}, ${formData.province}`,
+      product: cart.map(item => item.name).join(" | "),
+      quantity: cart.length,
+      paymentMethod: formData.paymentMethod,
+    };
+
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbzjssxF1uU42m083ajTztJiD1pH5zW3LM98Qz13IFIxtdXpl9ETJ_gr4mygk4yJweBo/exec",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      }
+    );
+
+    const result = await response.json();
+    console.log("Google Sheet:", result);
+
     if (formData.paymentMethod === "vietqr") {
       setShowQR(true);
     } else {
-      setLoading(true);
-      // Giả lập gửi dữ liệu...
-      setTimeout(() => {
-        setLoading(false);
-        setShowSuccess(true);
-      }, 1000);
+      setShowSuccess(true);
     }
-  };
+
+  } catch (error) {
+    console.error(error);
+    alert("Không thể lưu đơn hàng");
+  }
+};
 
   return (
     <div className="bg-white min-h-screen pt-28 pb-12 font-sans text-zinc-800">
