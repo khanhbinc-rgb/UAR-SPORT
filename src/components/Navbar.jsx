@@ -44,20 +44,20 @@ const cartCount = cart.length;
       />
 
       {/* NỘI DUNG CHỮ, LOGO: Luôn cố định một chỗ, không di chuyển */}
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 flex items-center justify-between relative z-10">
 
         {/* Logo */}
         <Link to="/">
           <img
             src={logo}
             alt="UAR SPORT"
-            className={`w-[150px] h-auto transition duration-300 ${isBlackText ? "brightness-0" : "brightness-100"}`} 
+            className={`w-[100px] sm:w-[120px] lg:w-[150px] h-auto transition duration-300 ${isBlackText ? "brightness-0" : "brightness-100"}`}
             // Tự động chuyển logo sang màu đen (brightness-0) khi nền trắng để nhìn rõ
           />
         </Link>
 
         {/* Menu */}
-        <nav className={`flex gap-8 font-medium transition-colors duration-300 ${textColorClass}`}>
+        <nav className={`flex gap-3 sm:gap-5 lg:gap-8 text-xs sm:text-sm lg:text-base font-medium transition-colors duration-300 ${textColorClass}`}>
           <Link to="/" className="hover:text-red-500 transition">
             Trang chủ
           </Link>
@@ -76,8 +76,8 @@ const cartCount = cart.length;
         </nav>
 
         {/* Bên phải - Hotline và Giỏ hàng */}
-        <div className={`flex items-center gap-6 transition-colors duration-300 ${textColorClass}`}>
-          <div className="text-left">
+        <div className={`flex items-center gap-2 sm:gap-4 lg:gap-6 transition-colors duration-300 ${textColorClass}`}>
+          <div className="text-left text-[10px] sm:text-xs lg:text-base">
             <p className="font-semibold">Hotline</p>
             <p>084 578 6886</p>
           </div>
@@ -90,9 +90,9 @@ const cartCount = cart.length;
     id="cart-icon"
     src={cartIcon}
     alt="Cart"
-    className={`w-8 h-8 ${
-      isBlackText ? "brightness-0" : "brightness-100"
-    }`}
+    className={`w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 ${
+  isBlackText ? "brightness-0" : "brightness-100"
+}`}
   />
 
   {cartCount > 0 && (
