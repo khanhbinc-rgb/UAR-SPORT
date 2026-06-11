@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { products } from "../data/products";
@@ -6,6 +6,7 @@ import { products } from "../data/products";
 function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
   const productImageRef = useRef(null);
   
   const product = products.find((item) => item.id === Number(id));
@@ -71,9 +72,9 @@ function ProductDetail() {
         </div>
 
         {/* CỘT PHẢI: Thông tin (Đã giới hạn độ rộng bằng max-w-lg) */}
-        <div className="flex-1 max-w-lg">
-          <h1 className="text-4xl font-bold mb-3">{product.name}</h1>
-          <p className="text-2xl text-gray-600 mb-8">{product.price}</p>
+        <div className="flex-1 max-w-lg text-center">
+          <h1 className="text-4xl font-bold mb-3 -mt-10">{product.name}</h1>
+          <p className="text-xl text-black-600 mb-8"> Giá bán: <span className="font-semibold">{product.price}</span> </p>
           
           <div className="mb-8 p-5 bg-gray-50 rounded-xl border border-gray-100">
             <h3 className="font-bold mb-2">Thông tin sản phẩm:</h3>

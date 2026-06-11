@@ -4,6 +4,7 @@ import logoBlack from "../assets/logouarsportden.png";
 import addToCartIcon from "../assets/Icon thêm vào giỏ hàng.png"; 
 // ĐÃ THÊM: Import thẻ Link để chạy định tuyến trang chi tiết
 import { Link } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
 
 function TrophyPage() {
   const [selectedCategory, setSelectedCategory] = useState("Tất cả");
@@ -46,7 +47,7 @@ function TrophyPage() {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-5 py-2 text-sm font-semibold transition rounded-md ${
+            className={`px-3 py-1.5 text-sm font-semibold transition rounded-md ${
               selectedCategory === cat
                 ? "bg-black text-white" 
                 : "text-zinc-600 hover:text-black bg-zinc-100 hover:bg-zinc-200"
@@ -58,7 +59,7 @@ function TrophyPage() {
       </div>
 
       {/* Ô tìm kiếm sản phẩm */}
-      <div className="max-w-md mx-auto relative px-6 mb-10">
+      <div className="max-w-xs mx-auto relative px-6 mb-7">
         <div className="relative">
           <input
             type="text"
@@ -67,19 +68,21 @@ function TrophyPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-4 pr-10 py-2.5 border border-zinc-300 rounded-full text-sm focus:outline-none focus:border-zinc-500 shadow-sm"
           />
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400">🔍</span>
+          <FiSearch
+  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 text-lg"
+/>
         </div>
       </div>
 
       {/* LƯỚI HIỂN THỊ 5 SẢN PHẨM/HÀNG */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10 gap-x-5 px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10 gap-x-5 px-4">
         {filteredProducts.map((product) => (
           <div
             key={product.id}
             className="flex flex-col bg-white text-center group"
           >
             {/* Khung ảnh sản phẩm */}
-            <div className="h-64 w-full bg-white flex items-center justify-center overflow-hidden relative">
+            <div className="h-40 md:h-64 w-full bg-white flex items-center justify-center overflow-hidden relative">
               <img
                 src={product.image}
                 alt={product.name}
@@ -91,7 +94,7 @@ function TrophyPage() {
             <div className="pt-1 flex flex-col flex-1 items-center">
               
               {/* Tên sản phẩm */}
-              <h3 className="font-bold text-base text-black px-1 leading-snug tracking-wide">
+              <h3 className="font-bold text-sm md:text-base text-black px-1 leading-snug tracking-wide">
                 {product.name}
               </h3>
               

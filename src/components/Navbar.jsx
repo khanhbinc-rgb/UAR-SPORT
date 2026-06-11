@@ -5,121 +5,137 @@ import cartIcon from "../assets/cart white.png";
 import { useCart } from "../context/CartContext";
 
 function Navbar() {
-const [isHovered, setIsHovered] = useState(false);
-const location = useLocation();
+  const [isHovered, setIsHovered] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-const { cart } = useCart();
-const cartCount = cart.length;
-  
+  const location = useLocation();
+  const { cart } = useCart();
+  const cartCount = cart.length;
 
-  // Kiểm tra xem người dùng có đang ở Trang chủ hay không
   const isHomePage = location.pathname === "/";
-
-  // QUY ĐỊNH MÀU CHỮ CỐ ĐỊNH:
-  // - Nếu đang ở trang chủ và KHÔNG hover: chữ màu trắng (để nổi trên banner).
-  // - Nếu ở trang chủ và CÓ hover, HOẶC đang ở các trang sản phẩm: chữ luôn màu đen.
-  const isBlackText = !isHomePage || isHovered;
+  const isBlackText = !isHomePage || mobileMenuOpen;
   const textColorClass = isBlackText ? "text-black" : "text-white";
-  
-  // Quy định màu viền và màu chữ của nút Giỏ hàng
-  const cartBtnClass = isBlackText
-    ? "border-black text-black hover:bg-black hover:text-white"
-    : "border-white text-white hover:bg-white hover:text-black";
 
   return (
     <header
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="fixed top-0 left-0 w-full z-50 transition-all duration-300"
+      className="fixed top-0 left-0 w-full z-50"
     >
-      {/* LỚP NỀN (BACKGROUND) CHẠY XUỐNG: Chỉ có lớp này co giãn/trượt xuống khi hover */}
-      <div 
-        className={`absolute top-0 left-0 w-full h-full -z-10 transition-all duration-500 ease-in-out origin-top transform ${
-          isHovered 
-            ? "scale-y-100 opacity-100 bg-white/95 shadow-md backdrop-blur-md" 
-            : isHomePage 
-              ? "scale-y-0 opacity-0 bg-transparent" 
-              : "scale-y-100 opacity-100 bg-white shadow-sm" // Các trang sản phẩm luôn có nền trắng cố định
+      {/* Background */}
+      <div
+        className={`absolute top-0 left-0 w-full h-full -z-10 transition-all duration-300 ${
+          mobileMenuOpen
+            ? "bg-white shadow-md"
+            : isHomePage
+            ? "bg-transparent"
+            : "bg-white shadow-sm"
         }`}
       />
 
-      {/* NỘI DUNG CHỮ, LOGO: Luôn cố định một chỗ, không di chuyển */}
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between relative z-10">
-
+      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between relative">
+        
         {/* Logo */}
         <Link to="/">
           <img
             src={logo}
             alt="UAR SPORT"
-            className={`w-[150px] h-auto transition duration-300 ${isBlackText ? "brightness-0" : "brightness-100"}`} 
-            // Tự động chuyển logo sang màu đen (brightness-0) khi nền trắng để nhìn rõ
+            className={`w-[120px] md:w-[150px] transition duration-300 ${
+              isBlackText ? "brightness-0" : "brightness-100"
+            }`}
           />
         </Link>
 
-        {/* Menu */}
-        <nav className={`flex gap-8 font-medium transition-colors duration-300 ${textColorClass}`}>
-          <Link to="/" className="hover:text-red-500 transition">
+        {/* Menu Desktop */}
+        <nav
+          className={`hidden md:flex gap-8 font-medium transition-colors duration-300 ${textColorClass}`}
+        >
+          <Link to="/" className="hover:text-red-500">
             Trang chủ
           </Link>
-          <Link to="/mo-hinh-cup" className="hover:text-red-500 transition">
+
+          <Link to="/mo-hinh-cup" className="hover:text-red-500">
             Mô hình cúp
           </Link>
-          <Link to="/products" className="hover:text-red-500 transition">
-            Giày bóng đá
-          </Link>
-          <Link to="/products" className="hover:text-red-500 transition">
-            Áo bóng đá
-          </Link>
-          <Link to="/products" className="hover:text-red-500 transition">
-            Phụ kiện
+
+          <Link to="/products" className="hover:text-red-500">
+            Sale
           </Link>
         </nav>
 
-        {/* Bên phải - Hotline và Giỏ hàng */}
-        <div className={`flex items-center gap-6 transition-colors duration-300 ${textColorClass}`}>
-          <div className="text-left">
+        {/* Bên phải */}
+        <div
+          className={`flex items-center gap-4 transition-colors duration-300 ${textColorClass}`}
+        >
+          {/* Hotline Desktop */}
+          <div className="hidden md:block text-left">
             <p className="font-semibold">Hotline</p>
             <p>084 578 6886</p>
           </div>
 
-<Link
-  to="/cart"
-  className="relative transition duration-300 hover:scale-110"
->
-  <img
-    id="cart-icon"
-    src={cartIcon}
-    alt="Cart"
-    className={`w-8 h-8 ${
-      isBlackText ? "brightness-0" : "brightness-100"
-    }`}
-  />
+          {/* Cart */}
+          <Link to="/cart" className="relative">
+            <img
+              id="cart-icon"
+              src={cartIcon}
+              alt="Cart"
+              className={`w-7 h-7 ${
+                isBlackText ? "brightness-0" : "brightness-100"
+              }`}
+            />
 
-  {cartCount > 0 && (
-    <span
-      className="
-        absolute
-        -top-2
-        -right-2
-        bg-red-500
-        text-white
-        text-[11px]
-        font-bold
-        w-5
-        h-5
-        rounded-full
-        flex
-        items-center
-        justify-center
-      "
-    >
-      {cartCount}
-    </span>
-  )}
-</Link>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
+          {/* Nút 3 gạch Mobile */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className={`md:hidden text-3xl ${textColorClass}`}
+          >
+            ☰
+          </button>
         </div>
-
       </div>
+
+      {/* Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Menu Mobile */}
+      {mobileMenuOpen && (
+        <div className="absolute top-full left-0 w-full bg-white shadow-lg z-50">
+          <nav className="flex flex-col p-5 gap-4 text-black font-medium">
+            <Link
+              to="/"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Trang chủ
+            </Link>
+
+            <Link
+              to="/mo-hinh-cup"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Mô hình cúp
+            </Link>
+
+            <Link
+              to="/products"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Sale
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

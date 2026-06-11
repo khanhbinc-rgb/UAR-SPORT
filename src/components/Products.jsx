@@ -33,31 +33,30 @@ function Products() {
       </div>
 
       <div 
-        ref={scrollRef} 
-        className="max-w-[1200px] mx-auto overflow-x-auto no-scrollbar scroll-smooth flex gap-x-8 px-4 pb-6"
+        className="max-w-7xl mx-auto px-4 pb-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
         {featuredTrophies.map((product) => (
           <div
             key={product.id}
-            className="w-[calc((100%-96px)/4)] min-w-[260px] flex-shrink-0 flex flex-col bg-white text-center border border-zinc-200 rounded-lg overflow-hidden group"
+            className="flex flex-col bg-white text-center border border-zinc-200 rounded-lg overflow-hidden group"
           >
             {/* VÙNG BẤM VÀO ĐỂ VÀO CHI TIẾT */}
             <Link to={`/product/${product.id}`} className="block">
-              <div className="h-72 w-full bg-white flex items-center justify-center overflow-hidden">
+              <div className="h-40 md:h-72 w-full bg-white flex items-center justify-center overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-contain group-hover:scale-105 transition duration-300"
                 />
               </div>
-              <h3 className="font-bold text-lg text-black px-2 mt-2 leading-snug line-clamp-2 min-h-[44px]">
+              <h3 className="font-bold text-sm md:text-lg text-black px-2 mt-2 leading-snug line-clamp-2 min-h-[44px]">
                 {product.name}
               </h3>
             </Link>
 
             {/* VÙNG THÔNG TIN VÀ NÚT BẤM (ĐỂ TÁCH BIỆT VỚI LINK) */}
             <div className="pt-2 flex flex-col flex-1 items-center p-4">
-              <p className="text-black font-semibold text-lg mt-1">
+              <p className="text-black font-semibold text-sm md:text-lg mt-1">
                 {product.price}
               </p>
               <div className="text-zinc-500 text-xs mt-0.5 mb-4">
