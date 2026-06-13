@@ -67,12 +67,15 @@ app.post("/save-order", async (req, res) => {
       }
     );
 
-    const data = await response.text();
+    const text = await response.text();
+
+    console.log("GOOGLE SHEET RESPONSE:", text);
 
     return res.json({
       success: true,
-      data,
+      data: text,
     });
+
   } catch (error) {
     console.error("SAVE ORDER ERROR:", error);
 

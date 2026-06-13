@@ -60,8 +60,8 @@ function Products() {
                 {product.price}
               </p>
               <div className="text-zinc-500 text-xs mt-0.5 mb-4">
-                Đã bán 8.9K
-              </div>
+  Đã bán {Math.floor(Math.random() * 9000) + 1000}
+</div>
 
               <div className="w-full flex items-center border border-zinc-200 overflow-hidden rounded-md shadow-sm mt-auto">
                 <button
@@ -79,7 +79,7 @@ function Products() {
                   onClick={() => handleBuyNow(product)}
                   className="flex-1 h-11 bg-black text-white font-bold text-sm hover:bg-zinc-800 transition"
                 >
-                  Buy now
+                  Mua ngay
                 </button>
               </div>
             </div>

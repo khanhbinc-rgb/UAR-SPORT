@@ -86,14 +86,28 @@ function Cart() {
     };
 
     const response = await fetch("/save-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    });
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(orderData),
+});
 
-    const result = await response.json();
+const text = await response.text();
+
+console.log("SAVE ORDER RESPONSE:", text);
+
+let result = {};
+
+try {
+  result = text ? JSON.parse(text) : {};
+} catch (e) {
+  console.error("Response không phải JSON:", text);
+}
+
+if (!response.ok) {
+  throw new Error(result.message || "Lưu đơn hàng thất bại");
+}
 
     console.log("SAVE ORDER RESULT:", result);
 

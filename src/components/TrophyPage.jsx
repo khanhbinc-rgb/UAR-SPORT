@@ -105,8 +105,8 @@ function TrophyPage() {
 
               {/* Số lượng đã bán */}
               <div className="text-zinc-500 text-xs mt-0.5 mb-3">
-                Đã bán 8.9K
-              </div>
+  Đã bán {Math.floor(Math.random() * 9000) + 1000}
+</div>
 
               {/* Khối nút bấm dưới đáy */}
               <div className="w-full flex items-center border border-zinc-200 overflow-hidden rounded shadow-sm mt-auto">
@@ -127,7 +127,7 @@ function TrophyPage() {
                   to={`/product/${product.id}`}
                   className="flex-1 h-10 bg-black text-white font-medium text-sm hover:bg-zinc-800 transition active:scale-[0.99] flex items-center justify-center"
                 >
-                  Buy now
+                  Mua ngay
                 </Link>
               </div>
 
