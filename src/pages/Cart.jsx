@@ -85,35 +85,32 @@ function Cart() {
       paymentMethod: formData.paymentMethod,
     };
 
-    const response = await fetch("/save-order", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(orderData),
-});
+    const response = await fetch(
+  "https://script.google.com/macros/s/AKfycbzjssxF1uU42m083ajTztJiD1pH5zW3LM98Qz13IFIxtdXpl9ETJ_gr4mygk4yJweBo/exec",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(orderData),
+  }
+);
 
 const text = await response.text();
 
-console.log("SAVE ORDER RESPONSE:", text);
+console.log("GOOGLE SHEET RESPONSE:", text);
 
 let result = {};
 
 try {
-  result = text ? JSON.parse(text) : {};
-} catch (e) {
-  console.error("Response không phải JSON:", text);
+  result = JSON.parse(text);
+} catch (err) {
+  throw new Error("Google Script trả về dữ liệu không hợp lệ");
 }
 
-if (!response.ok) {
+if (result.status !== "success") {
   throw new Error(result.message || "Lưu đơn hàng thất bại");
 }
-
-    console.log("SAVE ORDER RESULT:", result);
-
-    if (!response.ok) {
-      throw new Error(result.message || "Lưu đơn hàng thất bại");
-    }
 
     if (formData.paymentMethod === "vietqr") {
       setShowQR(true);

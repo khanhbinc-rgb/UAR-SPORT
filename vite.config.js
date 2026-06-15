@@ -12,5 +12,5 @@ export default defineConfig({
     outDir: 'backend/dist', // Vẫn xuất file build vào backend/dist
     emptyOutDir: true,
   },
-  base: './'
+  base: '/'
 })
