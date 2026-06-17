@@ -85,7 +85,7 @@ function Cart() {
       paymentMethod: formData.paymentMethod,
     };
 
-    const response = await fetch("/api/save-order", {
+    const response = await fetch("/save-order", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
