@@ -105,7 +105,9 @@ try {
   throw new Error("Google Script trả về dữ liệu không hợp lệ");
 }
 
-if (result.status !== "success") {
+let isSuccess = result.success === true || result.status === "success";
+
+if (!isSuccess) {
   throw new Error(result.message || "Lưu đơn hàng thất bại");
 }
 
