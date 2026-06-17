@@ -98,8 +98,13 @@ app.get(/.*/, (req, res) => {
 /* =========================================
    SERVER
 ========================================= */
-const PORT = process.env.PORT || 3000;
+// Chỉ chạy app.listen khi ở môi trường dưới máy cục bộ (Local)
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Xuất app ra để Vercel nhận diện biến Express thành Serverless Function
+module.exports = app;

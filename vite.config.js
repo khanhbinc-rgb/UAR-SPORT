@@ -7,9 +7,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  root: './', // Bảo Vite hãy đứng ở thư mục gốc để tìm index.html
+  root: './', 
   build: {
-    outDir: 'backend/dist', // Vẫn xuất file build vào backend/dist
+    outDir: 'dist', // Đổi từ 'backend/dist' thành 'dist' để Vercel tự tối ưu Frontend
     emptyOutDir: true,
   },
   base: '/'
