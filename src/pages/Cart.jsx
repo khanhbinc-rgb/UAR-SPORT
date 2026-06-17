@@ -85,16 +85,13 @@ function Cart() {
       paymentMethod: formData.paymentMethod,
     };
 
-    const response = await fetch(
-  "https://script.google.com/macros/s/AKfycbzjssxF1uU42m083ajTztJiD1pH5zW3LM98Qz13IFIxtdXpl9ETJ_gr4mygk4yJweBo/exec",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(orderData),
-  }
-);
+    const response = await fetch("/api/save-order", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(orderData),
+});
 
 const text = await response.text();
 
